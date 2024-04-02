@@ -32,6 +32,15 @@ def add_task():
         tasks.append(task)
         listbox.insert(END, task)
         
+def strike():
+    try:
+        selected_index = listbox.curselection()[0]
+        selected_task = tasks[selected_index]
+        tasks[selected_index] = ''.join([u'\u0336{}'.format(c) for c in selected_task])
+        update_listbox()
+    except IndexError:
+        pass  # No item selected
+
 
 def delete_task():
     global tasks
@@ -82,8 +91,14 @@ add_button = tk.Button(app, text="Add Task",width=20, font="Calibri 15 italic", 
 add_button.place(x=100, y=180)
 
 #Delete icon creation
+frame = Frame(app)
+frame.pack(side=BOTTOM, pady=(13))
+
 delete_icon = PhotoImage(file="Py-todo/delete.png")
-Button(app, image=delete_icon, bd=0, command=delete_task).pack(side=BOTTOM, pady=(13))
+Button(frame, image=delete_icon, bd=0, command=delete_task).pack(side=RIGHT, padx=(40))
+
+complete_icon = PhotoImage(file="Py-todo/complete.png")
+Button(frame, image=complete_icon, bd=0, command=strike).pack(side=LEFT, padx=(40))
 
 #List box
 list_box_frame = Frame(app, bd=4, width=700, height=300, bg="#0B5394")
